@@ -33,9 +33,7 @@ defineProps<Props>();
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full cursor-pointer" :href="edit()" prefetch>
-                <Settings class="mr-2 h-4 w-4" />
-                Settings
-            </Link>
+                <Settings class="mr-2 h-4 w-4" /> {{ $t('Settings') }} </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
@@ -47,8 +45,6 @@ defineProps<Props>();
             as="button"
             data-test="logout-button"
         >
-            <LogOut class="mr-2 h-4 w-4" />
-            Log out
-        </Link>
+            <LogOut class="mr-2 h-4 w-4" /> {{ $t('Log out') }} </Link>
     </DropdownMenuItem>
 </template>

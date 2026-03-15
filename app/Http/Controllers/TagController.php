@@ -34,7 +34,7 @@ class TagController extends Controller
             'slug' => Str::slug($validated['name']),
         ]);
 
-        return redirect()->route('tags.index')->with('success', 'Tag created successfully.');
+        return redirect()->route('tags.index')->with('success', __('Tag created successfully.'));
     }
 
     public function edit(Tag $tag): Response
@@ -55,17 +55,17 @@ class TagController extends Controller
             'slug' => Str::slug($validated['name']),
         ]);
 
-        return redirect()->route('tags.index')->with('success', 'Tag updated successfully.');
+        return redirect()->route('tags.index')->with('success', __('Tag updated successfully.'));
     }
 
     public function destroy(Tag $tag): RedirectResponse
     {
         if ($tag->articles()->exists()) {
-            return back()->with('error', 'Cannot delete a tag that is attached to articles.');
+            return back()->with('error', __('Cannot delete a tag that is attached to articles.'));
         }
 
         $tag->delete();
 
-        return redirect()->route('tags.index')->with('success', 'Tag deleted successfully.');
+        return redirect()->route('tags.index')->with('success', __('Tag deleted successfully.'));
     }
 }
