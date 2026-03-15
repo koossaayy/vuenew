@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Head } from '@inertiajs/vue3';
 import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import Heading from '@/components/Heading.vue';
@@ -7,9 +8,11 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { edit } from '@/routes/appearance';
 import type { BreadcrumbItem } from '@/types';
 
+const { t } = useI18n();
+
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Appearance settings',
+        title: t('Appearance settings'),
         href: edit(),
     },
 ];
@@ -17,15 +20,15 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Appearance settings" />
+        <Head :title="$t('Appearance settings')" />
 
-        <h1 class="sr-only">Appearance settings</h1>
+        <h1 class="sr-only">{{ $t('Appearance settings') }}</h1>
 
         <SettingsLayout>
             <div class="space-y-6">
                 <Heading
                     variant="small"
-                    title="Appearance settings"
+                    :title="$t('Appearance settings')"
                     description="Update your account's appearance settings"
                 />
                 <AppearanceTabs />
