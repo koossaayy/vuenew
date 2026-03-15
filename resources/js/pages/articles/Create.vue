@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import InputError from '@/components/InputError.vue';
@@ -16,6 +17,8 @@ import {
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
 
+const { t } = useI18n();
+
 type Category = {
     id: number;
     name: string;
@@ -32,9 +35,9 @@ defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Articles', href: '/articles' },
-    { title: 'New Article', href: '/articles/create' },
+    { title: t('Dashboard'), href: '/dashboard' },
+    { title: t('Articles'), href: '/articles' },
+    { title: t('New Article'), href: '/articles/create' },
 ];
 
 const form = useForm({
@@ -59,7 +62,7 @@ function toggleTag(tagId: number) {
 function submit() {
     if (!form.title.trim() || !form.body.trim() || !form.category_id) {
         localError.value =
-            'Please fill in all required fields (title, body, and category).';
+            t('Please fill in all required fields (title, body, and category).');
         return;
     }
 
@@ -71,15 +74,13 @@ function submit() {
 </script>
 
 <template>
-    <Head title="New Article" />
+    <Head :title="$t('New Article')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="mx-auto w-full max-w-2xl">
-                <h1 class="text-2xl font-bold">New Article</h1>
-                <p class="text-muted-foreground mt-1 text-sm">
-                    Write a new article and assign it to a category.
-                </p>
+                <h1 class="text-2xl font-bold">{{ $t('New Article') }}</h1>
+                <p class="text-muted-foreground mt-1 text-sm"> {{ $t('Write a new article and assign it to a category.') }} </p>
 
                 <form class="mt-6 space-y-6" @submit.prevent="submit">
                     <div
@@ -90,33 +91,33 @@ function submit() {
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="title">Title</Label>
+                        <Label for="title">{{ $t('Title') }}</Label>
                         <Input
                             id="title"
                             v-model="form.title"
-                            placeholder="Enter article title"
+                            :placeholder="$t('Enter article title')"
                         />
                         <InputError :message="form.errors.title" />
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="body">Body</Label>
+                        <Label for="body">{{ $t('Body') }}</Label>
                         <textarea
                             id="body"
                             v-model="form.body"
                             rows="8"
-                            placeholder="Write your article content here..."
+                            :placeholder="$t('Write your article content here...')"
                             class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30"
                         />
                         <InputError :message="form.errors.body" />
                     </div>
 
                     <div class="space-y-2">
-                        <Label>Category</Label>
+                        <Label>{{ $t('Category') }}</Label>
                         <Select v-model="form.category_id">
                             <SelectTrigger class="w-full">
                                 <SelectValue
-                                    placeholder="Select a category"
+                                    :placeholder="$t('Select a category')"
                                 />
                             </SelectTrigger>
                             <SelectContent>
@@ -133,19 +134,15 @@ function submit() {
                         <p
                             v-if="categories.length === 0"
                             class="text-muted-foreground text-sm"
-                        >
-                            No categories available.
-                            <Link
+                        > {{ $t('No categories available.') }} <Link
                                 href="/categories/create"
                                 class="text-primary underline"
-                            >
-                                Create one first.
-                            </Link>
+                            > {{ $t('Create one first.') }} </Link>
                         </p>
                     </div>
 
                     <div class="space-y-2">
-                        <Label>Tags</Label>
+                        <Label>{{ $t('Tags') }}</Label>
                         <div
                             v-if="tags.length > 0"
                             class="flex flex-wrap gap-3"
@@ -165,14 +162,10 @@ function submit() {
                         <p
                             v-else
                             class="text-muted-foreground text-sm"
-                        >
-                            No tags available.
-                            <Link
+                        > {{ $t('No tags available.') }} <Link
                                 href="/tags/create"
                                 class="text-primary underline"
-                            >
-                                Create some first.
-                            </Link>
+                            > {{ $t('Create some first.') }} </Link>
                         </p>
                     </div>
 
@@ -185,17 +178,13 @@ function submit() {
                                     (form.is_published = val === true)
                             "
                         />
-                        <Label for="is_published" class="cursor-pointer">
-                            Publish immediately
-                        </Label>
+                        <Label for="is_published" class="cursor-pointer"> {{ $t('Publish immediately') }} </Label>
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button type="submit" :disabled="form.processing">
-                            Create Article
-                        </Button>
+                        <Button type="submit" :disabled="form.processing"> {{ $t('Create Article') }} </Button>
                         <Button variant="outline" as-child>
-                            <Link href="/articles">Cancel</Link>
+                            <Link href="/articles">{{ $t('Cancel') }}</Link>
                         </Button>
                     </div>
                 </form>

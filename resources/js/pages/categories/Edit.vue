@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import InputError from '@/components/InputError.vue';
@@ -7,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
+
+const { t } = useI18n();
 
 type Category = {
     id: number;
@@ -19,9 +22,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Categories', href: '/categories' },
-    { title: 'Edit Category', href: `/categories/${props.category.id}/edit` },
+    { title: t('Dashboard'), href: '/dashboard' },
+    { title: t('Categories'), href: '/categories' },
+    { title: t('Edit Category'), href: `/categories/${props.category.id}/edit` },
 ];
 
 const form = useForm({
@@ -34,22 +37,20 @@ function submit() {
     form.put(`/categories/${props.category.id}`, {
         preserveScroll: true,
         onSuccess: () => {
-            localSuccess.value = 'Changes saved! Redirecting to categories list...';
+            localSuccess.value = t('Changes saved! Redirecting to categories list...');
         },
     });
 }
 </script>
 
 <template>
-    <Head title="Edit Category" />
+    <Head :title="$t('Edit Category')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="mx-auto w-full max-w-2xl">
-                <h1 class="text-2xl font-bold">Edit Category</h1>
-                <p class="text-muted-foreground mt-1 text-sm">
-                    Update the category details below.
-                </p>
+                <h1 class="text-2xl font-bold">{{ $t('Edit Category') }}</h1>
+                <p class="text-muted-foreground mt-1 text-sm"> {{ $t('Update the category details below.') }} </p>
 
                 <form class="mt-6 space-y-6" @submit.prevent="submit">
                     <div
@@ -60,17 +61,15 @@ function submit() {
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="name">Name</Label>
+                        <Label for="name">{{ $t('Name') }}</Label>
                         <Input id="name" v-model="form.name" />
                         <InputError :message="form.errors.name" />
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button type="submit" :disabled="form.processing">
-                            Update Category
-                        </Button>
+                        <Button type="submit" :disabled="form.processing"> {{ $t('Update Category') }} </Button>
                         <Button variant="outline" as-child>
-                            <Link href="/categories">Cancel</Link>
+                            <Link href="/categories">{{ $t('Cancel') }}</Link>
                         </Button>
                     </div>
                 </form>
