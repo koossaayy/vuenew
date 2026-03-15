@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import InputError from '@/components/InputError.vue';
@@ -8,10 +9,12 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
 
+const { t } = useI18n();
+
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Categories', href: '/categories' },
-    { title: 'Create Category', href: '/categories/create' },
+    { title: t('Dashboard'), href: '/dashboard' },
+    { title: t('Categories'), href: '/categories' },
+    { title: t('Create Category'), href: '/categories/create' },
 ];
 
 const form = useForm({
@@ -22,7 +25,7 @@ const localError = ref('');
 
 function submit() {
     if (!form.name.trim()) {
-        localError.value = 'Please enter a category name before submitting.';
+        localError.value = t('Please enter a category name before submitting.');
         return;
     }
 
@@ -34,15 +37,13 @@ function submit() {
 </script>
 
 <template>
-    <Head title="Create Category" />
+    <Head :title="$t('Create Category')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="mx-auto w-full max-w-2xl">
-                <h1 class="text-2xl font-bold">Create Category</h1>
-                <p class="text-muted-foreground mt-1 text-sm">
-                    Add a new category to organize your articles.
-                </p>
+                <h1 class="text-2xl font-bold">{{ $t('Create Category') }}</h1>
+                <p class="text-muted-foreground mt-1 text-sm"> {{ $t('Add a new category to organize your articles.') }} </p>
 
                 <form class="mt-6 space-y-6" @submit.prevent="submit">
                     <div
@@ -53,21 +54,19 @@ function submit() {
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="name">Name</Label>
+                        <Label for="name">{{ $t('Name') }}</Label>
                         <Input
                             id="name"
                             v-model="form.name"
-                            placeholder="e.g. Technology, Science, Sports"
+                            :placeholder="$t('e.g. Technology, Science, Sports')"
                         />
                         <InputError :message="form.errors.name" />
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button type="submit" :disabled="form.processing">
-                            Create Category
-                        </Button>
+                        <Button type="submit" :disabled="form.processing"> {{ $t('Create Category') }} </Button>
                         <Button variant="outline" as-child>
-                            <Link href="/categories">Cancel</Link>
+                            <Link href="/categories">{{ $t('Cancel') }}</Link>
                         </Button>
                     </div>
                 </form>
