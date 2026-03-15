@@ -16,25 +16,28 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: t('Dashboard'),
         href: dashboard(),
         icon: LayoutGrid,
     },
     {
-        title: 'Articles',
+        title: t('Articles'),
         href: '/articles',
         icon: FileText,
     },
     {
-        title: 'Categories',
+        title: t('Categories'),
         href: '/categories',
         icon: FolderOpen,
     },
     {
-        title: 'Tags',
+        title: t('Tags'),
         href: '/tags',
         icon: Hash,
     },
@@ -42,12 +45,12 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
+        title: t('Repository'),
         href: 'https://github.com/laravel/vue-starter-kit',
         icon: FolderGit2,
     },
     {
-        title: 'Documentation',
+        title: t('Documentation'),
         href: 'https://laravel.com/docs/starter-kits#vue',
         icon: BookOpen,
     },

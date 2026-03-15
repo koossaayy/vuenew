@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -15,6 +16,8 @@ import {
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
+
+const { t } = useI18n();
 
 type Category = {
     id: number;
@@ -43,9 +46,9 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Articles', href: '/articles' },
-    { title: 'Edit Article', href: `/articles/${props.article.id}/edit` },
+    { title: t('Dashboard'), href: '/dashboard' },
+    { title: t('Articles'), href: '/articles' },
+    { title: t('Edit Article'), href: `/articles/${props.article.id}/edit` },
 ];
 
 const form = useForm({
@@ -72,22 +75,20 @@ function submit() {
         preserveScroll: true,
         onSuccess: () => {
             localSuccess.value =
-                'Article has been updated! Redirecting...';
+                t('Article has been updated! Redirecting...');
         },
     });
 }
 </script>
 
 <template>
-    <Head title="Edit Article" />
+    <Head :title="$t('Edit Article')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="mx-auto w-full max-w-2xl">
-                <h1 class="text-2xl font-bold">Edit Article</h1>
-                <p class="text-muted-foreground mt-1 text-sm">
-                    Update your article details below.
-                </p>
+                <h1 class="text-2xl font-bold">{{ $t('Edit Article') }}</h1>
+                <p class="text-muted-foreground mt-1 text-sm"> {{ $t('Update your article details below.') }} </p>
 
                 <form class="mt-6 space-y-6" @submit.prevent="submit">
                     <div
@@ -98,13 +99,13 @@ function submit() {
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="title">Title</Label>
+                        <Label for="title">{{ $t('Title') }}</Label>
                         <Input id="title" v-model="form.title" />
                         <InputError :message="form.errors.title" />
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="body">Body</Label>
+                        <Label for="body">{{ $t('Body') }}</Label>
                         <textarea
                             id="body"
                             v-model="form.body"
@@ -115,11 +116,11 @@ function submit() {
                     </div>
 
                     <div class="space-y-2">
-                        <Label>Category</Label>
+                        <Label>{{ $t('Category') }}</Label>
                         <Select v-model="form.category_id">
                             <SelectTrigger class="w-full">
                                 <SelectValue
-                                    placeholder="Select a category"
+                                    :placeholder="$t('Select a category')"
                                 />
                             </SelectTrigger>
                             <SelectContent>
@@ -136,7 +137,7 @@ function submit() {
                     </div>
 
                     <div class="space-y-2">
-                        <Label>Tags</Label>
+                        <Label>{{ $t('Tags') }}</Label>
                         <div
                             v-if="tags.length > 0"
                             class="flex flex-wrap gap-3"
@@ -156,9 +157,7 @@ function submit() {
                         <p
                             v-else
                             class="text-muted-foreground text-sm"
-                        >
-                            No tags available.
-                        </p>
+                        > {{ $t('No tags available.') }} </p>
                     </div>
 
                     <div class="flex items-center gap-2">
@@ -170,17 +169,13 @@ function submit() {
                                     (form.is_published = val === true)
                             "
                         />
-                        <Label for="is_published" class="cursor-pointer">
-                            Publish immediately
-                        </Label>
+                        <Label for="is_published" class="cursor-pointer"> {{ $t('Publish immediately') }} </Label>
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button type="submit" :disabled="form.processing">
-                            Update Article
-                        </Button>
+                        <Button type="submit" :disabled="form.processing"> {{ $t('Update Article') }} </Button>
                         <Button variant="outline" as-child>
-                            <Link href="/articles">Cancel</Link>
+                            <Link href="/articles">{{ $t('Cancel') }}</Link>
                         </Button>
                     </div>
                 </form>
