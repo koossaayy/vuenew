@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
@@ -14,6 +15,8 @@ import {
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
 
+const { t } = useI18n();
+
 type Category = {
     id: number;
     name: string;
@@ -26,8 +29,8 @@ defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Categories', href: '/categories' },
+    { title: t('Dashboard'), href: '/dashboard' },
+    { title: t('Categories'), href: '/categories' },
 ];
 
 const confirmingDelete = ref(false);
@@ -51,17 +54,15 @@ function deleteCategory() {
 </script>
 
 <template>
-    <Head title="Categories" />
+    <Head :title="$t('Categories')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-bold">Categories</h1>
+                <h1 class="text-2xl font-bold">{{ $t('Categories') }}</h1>
                 <Button as-child>
                     <Link href="/categories/create">
-                        <Plus class="size-4" />
-                        Add Category
-                    </Link>
+                        <Plus class="size-4" /> {{ $t('Add Category') }} </Link>
                 </Button>
             </div>
 
@@ -70,15 +71,11 @@ function deleteCategory() {
                 class="flex flex-1 items-center justify-center rounded-xl border border-dashed p-12"
             >
                 <div class="text-center">
-                    <h3 class="text-lg font-medium">No categories yet</h3>
-                    <p class="text-muted-foreground mt-1 text-sm">
-                        Get started by creating your first category.
-                    </p>
+                    <h3 class="text-lg font-medium">{{ $t('No categories yet') }}</h3>
+                    <p class="text-muted-foreground mt-1 text-sm"> {{ $t('Get started by creating your first category.') }} </p>
                     <Button as-child class="mt-4">
                         <Link href="/categories/create">
-                            <Plus class="size-4" />
-                            Create Category
-                        </Link>
+                            <Plus class="size-4" /> {{ $t('Create Category') }} </Link>
                     </Button>
                 </div>
             </div>
@@ -87,12 +84,10 @@ function deleteCategory() {
                 <table class="w-full">
                     <thead>
                         <tr class="border-b text-left text-sm">
-                            <th class="px-4 py-3 font-medium">Name</th>
-                            <th class="px-4 py-3 font-medium">Slug</th>
-                            <th class="px-4 py-3 font-medium">Articles</th>
-                            <th class="px-4 py-3 text-right font-medium">
-                                Actions
-                            </th>
+                            <th class="px-4 py-3 font-medium">{{ $t('Name') }}</th>
+                            <th class="px-4 py-3 font-medium">{{ $t('Slug') }}</th>
+                            <th class="px-4 py-3 font-medium">{{ $t('Articles') }}</th>
+                            <th class="px-4 py-3 text-right font-medium"> {{ $t('Actions') }} </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,7 +142,7 @@ function deleteCategory() {
         <Dialog v-model:open="confirmingDelete">
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Delete Category</DialogTitle>
+                    <DialogTitle>{{ $t('Delete Category') }}</DialogTitle>
                     <DialogDescription>
                         Are you sure you want to delete the category
                         "{{ categoryToDelete?.name }}"? This action cannot be
@@ -158,12 +153,8 @@ function deleteCategory() {
                     <Button
                         variant="outline"
                         @click="confirmingDelete = false"
-                    >
-                        Cancel
-                    </Button>
-                    <Button variant="destructive" @click="deleteCategory">
-                        Delete
-                    </Button>
+                    > {{ $t('Cancel') }} </Button>
+                    <Button variant="destructive" @click="deleteCategory"> {{ $t('Delete') }} </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

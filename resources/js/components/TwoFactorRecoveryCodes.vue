@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Form } from '@inertiajs/vue3';
 import { Eye, EyeOff, LockKeyhole, RefreshCw } from 'lucide-vue-next';
 import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
@@ -13,6 +14,8 @@ import {
 } from '@/components/ui/card';
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import { regenerateRecoveryCodes } from '@/routes/two-factor';
+
+const { t } = useI18n();
 
 const { recoveryCodesList, fetchRecoveryCodes, errors } = useTwoFactorAuth();
 const isRecoveryCodesVisible = ref<boolean>(false);
@@ -42,12 +45,8 @@ onMounted(async () => {
     <Card class="w-full">
         <CardHeader>
             <CardTitle class="flex gap-3">
-                <LockKeyhole class="size-4" />2FA recovery codes
-            </CardTitle>
-            <CardDescription>
-                Recovery codes let you regain access if you lose your 2FA
-                device. Store them in a secure password manager.
-            </CardDescription>
+                <LockKeyhole class="size-4" />{{ $t('2FA recovery codes') }} </CardTitle>
+            <CardDescription> {{ $t('Recovery codes let you regain access if you lose your 2FA device. Store them in a secure password manager.') }} </CardDescription>
         </CardHeader>
         <CardContent>
             <div
@@ -58,7 +57,7 @@ onMounted(async () => {
                         :is="isRecoveryCodesVisible ? EyeOff : Eye"
                         class="size-4"
                     />
-                    {{ isRecoveryCodesVisible ? 'Hide' : 'View' }} recovery
+                    {{ isRecoveryCodesVisible ? $t('Hide') : $t('View') }} recovery
                     codes
                 </Button>
 
@@ -75,8 +74,7 @@ onMounted(async () => {
                         type="submit"
                         :disabled="processing"
                     >
-                        <RefreshCw /> Regenerate codes
-                    </Button>
+                        <RefreshCw /> {{ $t('Regenerate codes') }} </Button>
                 </Form>
             </div>
             <div
@@ -110,12 +108,7 @@ onMounted(async () => {
                             {{ code }}
                         </div>
                     </div>
-                    <p class="text-xs text-muted-foreground select-none">
-                        Each recovery code can be used once to access your
-                        account and will be removed after use. If you need more,
-                        click
-                        <span class="font-bold">Regenerate codes</span> above.
-                    </p>
+                    <p class="text-xs text-muted-foreground select-none"> {{ $t('Each recovery code can be used once to access your account and will be removed after use. If you need more, click') }} <span class="font-bold">{{ $t('Regenerate codes') }}</span> {{ $t('above.') }} </p>
                 </div>
             </div>
         </CardContent>
