@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,10 +9,12 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
 
+const { t } = useI18n();
+
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Tags', href: '/tags' },
-    { title: 'Create Tag', href: '/tags/create' },
+    { title: t('Dashboard'), href: '/dashboard' },
+    { title: t('Tags'), href: '/tags' },
+    { title: t('Create Tag'), href: '/tags/create' },
 ];
 
 const form = useForm({
@@ -22,7 +25,7 @@ const localError = ref('');
 
 function submit() {
     if (!form.name.trim()) {
-        localError.value = 'The tag name field is required.';
+        localError.value = t('The tag name field is required.');
         return;
     }
 
@@ -34,15 +37,13 @@ function submit() {
 </script>
 
 <template>
-    <Head title="Create Tag" />
+    <Head :title="$t('Create Tag')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="mx-auto w-full max-w-2xl">
-                <h1 class="text-2xl font-bold">Create Tag</h1>
-                <p class="text-muted-foreground mt-1 text-sm">
-                    Add a new tag to label your articles.
-                </p>
+                <h1 class="text-2xl font-bold">{{ $t('Create Tag') }}</h1>
+                <p class="text-muted-foreground mt-1 text-sm"> {{ $t('Add a new tag to label your articles.') }} </p>
 
                 <form class="mt-6 space-y-6" @submit.prevent="submit">
                     <div
@@ -53,21 +54,19 @@ function submit() {
                     </div>
 
                     <div class="space-y-2">
-                        <Label for="name">Name</Label>
+                        <Label for="name">{{ $t('Name') }}</Label>
                         <Input
                             id="name"
                             v-model="form.name"
-                            placeholder="e.g. Laravel, Vue.js, PHP"
+                            :placeholder="$t('e.g. Laravel, Vue.js, PHP')"
                         />
                         <InputError :message="form.errors.name" />
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button type="submit" :disabled="form.processing">
-                            Create Tag
-                        </Button>
+                        <Button type="submit" :disabled="form.processing"> {{ $t('Create Tag') }} </Button>
                         <Button variant="outline" as-child>
-                            <Link href="/tags">Cancel</Link>
+                            <Link href="/tags">{{ $t('Cancel') }}</Link>
                         </Button>
                     </div>
                 </form>

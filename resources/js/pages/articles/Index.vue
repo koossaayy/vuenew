@@ -2,6 +2,7 @@
 import { Head, Link, router } from '@inertiajs/vue3';
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,6 +15,8 @@ import {
 } from '@/components/ui/dialog';
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
+
+const { t } = useI18n();
 
 type Tag = {
     id: number;
@@ -41,8 +44,8 @@ defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Articles', href: '/articles' },
+    { title: t('Dashboard'), href: '/dashboard' },
+    { title: t('Articles'), href: '/articles' },
 ];
 
 const confirmingDelete = ref(false);
@@ -66,17 +69,15 @@ function deleteArticle() {
 </script>
 
 <template>
-    <Head title="Articles" />
+    <Head :title="$t('Articles')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-bold">Articles</h1>
+                <h1 class="text-2xl font-bold">{{ $t('Articles') }}</h1>
                 <Button as-child>
                     <Link href="/articles/create">
-                        <Plus class="size-4" />
-                        New Article
-                    </Link>
+                        <Plus class="size-4" /> {{ $t('New Article') }} </Link>
                 </Button>
             </div>
 
@@ -85,15 +86,11 @@ function deleteArticle() {
                 class="flex flex-1 items-center justify-center rounded-xl border border-dashed p-12"
             >
                 <div class="text-center">
-                    <h3 class="text-lg font-medium">No articles yet</h3>
-                    <p class="text-muted-foreground mt-1 text-sm">
-                        Get started by creating your first article.
-                    </p>
+                    <h3 class="text-lg font-medium">{{ $t('No articles yet') }}</h3>
+                    <p class="text-muted-foreground mt-1 text-sm"> {{ $t('Get started by creating your first article.') }} </p>
                     <Button as-child class="mt-4">
                         <Link href="/articles/create">
-                            <Plus class="size-4" />
-                            Write Article
-                        </Link>
+                            <Plus class="size-4" /> {{ $t('Write Article') }} </Link>
                     </Button>
                 </div>
             </div>
@@ -102,13 +99,11 @@ function deleteArticle() {
                 <table class="w-full">
                     <thead>
                         <tr class="border-b text-left text-sm">
-                            <th class="px-4 py-3 font-medium">Title</th>
-                            <th class="px-4 py-3 font-medium">Category</th>
-                            <th class="px-4 py-3 font-medium">Tags</th>
-                            <th class="px-4 py-3 font-medium">Status</th>
-                            <th class="px-4 py-3 text-right font-medium">
-                                Actions
-                            </th>
+                            <th class="px-4 py-3 font-medium">{{ $t('Title') }}</th>
+                            <th class="px-4 py-3 font-medium">{{ $t('Category') }}</th>
+                            <th class="px-4 py-3 font-medium">{{ $t('Tags') }}</th>
+                            <th class="px-4 py-3 font-medium">{{ $t('Status') }}</th>
+                            <th class="px-4 py-3 text-right font-medium"> {{ $t('Actions') }} </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -146,9 +141,7 @@ function deleteArticle() {
                                     <span
                                         v-if="article.tags.length === 0"
                                         class="text-muted-foreground text-sm"
-                                    >
-                                        No tags
-                                    </span>
+                                    > {{ $t('No tags') }} </span>
                                 </div>
                             </td>
                             <td class="px-4 py-3">
@@ -161,8 +154,8 @@ function deleteArticle() {
                                 >
                                     {{
                                         article.is_published
-                                            ? 'Published'
-                                            : 'Draft'
+                                            ? $t('Published')
+                                            : $t('Draft')
                                     }}
                                 </Badge>
                             </td>
@@ -201,7 +194,7 @@ function deleteArticle() {
         <Dialog v-model:open="confirmingDelete">
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Delete Article</DialogTitle>
+                    <DialogTitle>{{ $t('Delete Article') }}</DialogTitle>
                     <DialogDescription>
                         Are you sure you want to delete
                         "{{ articleToDelete?.title }}"? This action cannot be
@@ -212,12 +205,8 @@ function deleteArticle() {
                     <Button
                         variant="outline"
                         @click="confirmingDelete = false"
-                    >
-                        Cancel
-                    </Button>
-                    <Button variant="destructive" @click="deleteArticle">
-                        Delete
-                    </Button>
+                    > {{ $t('Cancel') }} </Button>
+                    <Button variant="destructive" @click="deleteArticle"> {{ $t('Delete') }} </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

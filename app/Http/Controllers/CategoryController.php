@@ -34,7 +34,7 @@ class CategoryController extends Controller
             'slug' => Str::slug($validated['name']),
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
+        return redirect()->route('categories.index')->with(__('success'), __('Category created successfully.'));
     }
 
     public function edit(Category $category): Response
@@ -55,17 +55,17 @@ class CategoryController extends Controller
             'slug' => Str::slug($validated['name']),
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+        return redirect()->route('categories.index')->with(__('success'), __('Category updated successfully.'));
     }
 
     public function destroy(Category $category): RedirectResponse
     {
         if ($category->articles()->exists()) {
-            return back()->with('error', 'Cannot delete a category that has articles.');
+            return back()->with(__('error'), __('Cannot delete a category that has articles.'));
         }
 
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        return redirect()->route('categories.index')->with(__('success'), __('Category deleted successfully.'));
     }
 }
