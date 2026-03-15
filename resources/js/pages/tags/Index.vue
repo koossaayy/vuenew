@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
@@ -15,6 +16,8 @@ import {
 import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
 
+const { t } = useI18n();
+
 type Tag = {
     id: number;
     name: string;
@@ -27,8 +30,8 @@ defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Dashboard', href: '/dashboard' },
-    { title: 'Tags', href: '/tags' },
+    { title: t('Dashboard'), href: '/dashboard' },
+    { title: t('Tags'), href: '/tags' },
 ];
 
 const confirmingDelete = ref(false);
@@ -51,7 +54,7 @@ function deleteTag() {
             },
             onError: () => {
                 deleteError.value =
-                    'Something went wrong while deleting the tag. Please try again.';
+                    t('Something went wrong while deleting the tag. Please try again.');
             },
         });
     }
@@ -59,17 +62,15 @@ function deleteTag() {
 </script>
 
 <template>
-    <Head title="Tags" />
+    <Head :title="$t('Tags')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="flex items-center justify-between">
-                <h1 class="text-2xl font-bold">Tags</h1>
+                <h1 class="text-2xl font-bold">{{ $t('Tags') }}</h1>
                 <Button as-child>
                     <Link href="/tags/create">
-                        <Plus class="size-4" />
-                        Add Tag
-                    </Link>
+                        <Plus class="size-4" /> {{ $t('Add Tag') }} </Link>
                 </Button>
             </div>
 
@@ -78,15 +79,11 @@ function deleteTag() {
                 class="flex flex-1 items-center justify-center rounded-xl border border-dashed p-12"
             >
                 <div class="text-center">
-                    <h3 class="text-lg font-medium">No tags yet</h3>
-                    <p class="text-muted-foreground mt-1 text-sm">
-                        Get started by creating your first tag.
-                    </p>
+                    <h3 class="text-lg font-medium">{{ $t('No tags yet') }}</h3>
+                    <p class="text-muted-foreground mt-1 text-sm"> {{ $t('Get started by creating your first tag.') }} </p>
                     <Button as-child class="mt-4">
                         <Link href="/tags/create">
-                            <Plus class="size-4" />
-                            Create Tag
-                        </Link>
+                            <Plus class="size-4" /> {{ $t('Create Tag') }} </Link>
                     </Button>
                 </div>
             </div>
@@ -100,7 +97,7 @@ function deleteTag() {
                     <Badge variant="secondary">{{ tag.name }}</Badge>
                     <span class="text-muted-foreground text-xs">
                         {{ tag.articles_count }}
-                        {{ tag.articles_count === 1 ? 'article' : 'articles' }}
+                        {{ tag.articles_count === 1 ? $t('article') : $t('articles') }}
                     </span>
                     <div class="ml-2 flex gap-1">
                         <Button
@@ -127,7 +124,7 @@ function deleteTag() {
         <Dialog v-model:open="confirmingDelete">
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Delete Tag</DialogTitle>
+                    <DialogTitle>{{ $t('Delete Tag') }}</DialogTitle>
                     <DialogDescription>
                         Are you sure you want to delete the tag
                         "{{ tagToDelete?.name }}"? This action cannot be undone.
@@ -143,12 +140,8 @@ function deleteTag() {
                     <Button
                         variant="outline"
                         @click="confirmingDelete = false"
-                    >
-                        Cancel
-                    </Button>
-                    <Button variant="destructive" @click="deleteTag">
-                        Delete
-                    </Button>
+                    > {{ $t('Cancel') }} </Button>
+                    <Button variant="destructive" @click="deleteTag"> {{ $t('Delete') }} </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
